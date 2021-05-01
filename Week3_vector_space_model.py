@@ -29,7 +29,7 @@ def find_tf():
 find_tf()
 print("\n\nTF Matrix -\n\n",tf_matrix)
 idf_matrix = np.zeros(len(vocabulary))
-print("\n\nIDF Matrix -\n\n",idf_matrix)
+
 
 def find_idf():
     for key in index:
@@ -40,6 +40,7 @@ def find_idf():
         idf_matrix[i] = res
 
 find_idf()
+print("\n\nIDF Matrix -\n\n",idf_matrix)
 
 tf_idf = tf_matrix * idf_matrix
 print("\n\nTF * IDF Matrix - \n\n",tf_idf)
