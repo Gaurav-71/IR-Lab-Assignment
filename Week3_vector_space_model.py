@@ -32,7 +32,10 @@ def find_tf():
 find_tf()
 print("\n\nTF Matrix -\n\n", tf_matrix)
 idf_matrix = np.zeros(len(vocabulary))
+<<<<<<< HEAD
 print("\n\nIDF Matrix -\n\n", idf_matrix)
+=======
+>>>>>>> 84ab732a33f7eb777e5f39e2a1479200c1db2342
 
 
 def find_idf():
@@ -45,6 +48,7 @@ def find_idf():
 
 
 find_idf()
+print("\n\nIDF Matrix -\n\n",idf_matrix)
 
 tf_idf = tf_matrix * idf_matrix
 print("\n\nTF * IDF Matrix - \n\n", tf_idf)
