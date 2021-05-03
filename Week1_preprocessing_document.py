@@ -6,24 +6,31 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
-# nltk.download('punkt')
-# nltk.download('stopwords')
-
+show_statistics = False
 
 def preprocess_document(fname):
+    
     doc = open(fname, encoding='iso-8859-1')
+    num_words=0
+
     x = ""
 
     for line in doc:
+        split_line = line.split(" ")
+        num_words+=len(split_line)
+
         line = ''.join(e for e in line if e.isalnum() or e == ' ')
 
         line = line + "\n"
         x = x + line
 
+
     text_tokens = word_tokenize(x)
     tokens_without_stopwords = [
         word for word in text_tokens if word not in stopwords.words()]
 
+
+    
     x = " ".join(tokens_without_stopwords)
 
     porter_stemmer = PorterStemmer()
@@ -31,6 +38,13 @@ def preprocess_document(fname):
     final_text = ""
     for t in tokens_without_stopwords:
         final_text = final_text + porter_stemmer.stem(t) + " "
+
+    if(show_statistics):
+        print("\nLength of Document before processing -", num_words)
+        print("Length of Document after lexical analysis -", len(x.split(" ")))
+        print("Length of Document after stopwords removal -", len(tokens_without_stopwords))
+        print("Length of Document after stemming -", len(final_text.split(" ")))
+        print("Percentage decrease in length - ", str(round(100*((num_words - len(final_text.split(" ")))/num_words), 2))+'%')
 
     print("Finished preprocessing -", fname)
 
@@ -64,10 +78,14 @@ def preprocess_query(query):
 def main():
 
     for i in range(1, 4):
+
         preprocessed_doc = preprocess_document(
             "./Document Preprocessing/Text"+str(i)+".txt")
         f = open('./Document Preprocessing/PreprocessedText'+str(i)+'.txt', 'w')
         f.write(preprocessed_doc)
         f.close()
 
-# main()
+if(show_statistics):
+    main()
+    print()
+

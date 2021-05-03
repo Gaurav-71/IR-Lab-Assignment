@@ -3,6 +3,13 @@ import Week1_preprocessing_document
 from nltk.tokenize import word_tokenize
 import numpy as np
 
+def print_ranks(ranking):
+    print("Document Number \t Rank")
+    print("--------------------------------------------------")
+    for pair in ranking:
+        print("\t",pair[1],"\t\t",pair[0])
+    print()
+
 index = None
 vocabulary = None
 document_lengths = None
@@ -13,7 +20,7 @@ with open('index', 'rb') as fp:
 with open('document_lengths', 'rb') as fp:
     document_lengths = pickle.load(fp)
 
-print("Index ['project'] : ",index['project'])
+print('Ready for ranking the query -')
 
 n_vec = np.zeros(len(vocabulary)) # net vector storing net ratio for all the words 
 
@@ -25,10 +32,12 @@ for key in index:
     n_vec[i] = net
 
 
-query = "A somewhat higher level on the inclined plane is illustrated by what are called tropisms obligatory movements which the animal makes, adjusting its whole body so that physiological equilibrium results in relation to gravity, pressure, currents, moisture, heat, light, electricity, and surfaces of contact. A moth is flying past a candle; the eye next the light is more illumined than the other; a physiological inequilibrium results, affecting nerve-cells and muscle-cells; the outcome is that the moth automatically adjusts its flight so that both eyes become equally illumined; in doing this it often flies into the candle."
+query = input("\nEnter your query :") 
 query = Week1_preprocessing_document.preprocess_query(query) 
 query = word_tokenize(query)
 
+print(index['sun'])
+print(index['moon'])
 ranking = []
 
 for i in range(0, 10): # initializing same rank for all docs
@@ -39,8 +48,10 @@ for key in query: # key is tokenized word
     i = vocabulary.index(key) # position of tokenized word in vocab
     net = n_vec[i] # net ratio of tokenized word
     for doc_num in term[1].keys(): # loop to fetch document numbers and ranking ( done based on net ratio value )
-        ranking[doc_num][0] = ranking[doc_num][0]*net
+        ranking[doc_num][0] *= (net)
 
+print("\nRanking of the documents w.r.t the query --\n")
 ranking.sort(reverse=True)
-print("Ranking : ",ranking)
+print_ranks(ranking)
+
 

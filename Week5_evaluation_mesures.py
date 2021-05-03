@@ -77,6 +77,8 @@ print("R_Precission : ", r_precission)
 
 x, y = zip(*inp)
 plt1.plot(x, y)
+plt1.xlabel("Recall")
+plt1.ylabel("Precision")
 plt1.show()
 
 rq1 = [3, 5, 9, 25, 39, 44, 56, 9, 25, 39, 44,
@@ -100,15 +102,17 @@ x2, y2 = zip(*inp2)
 diff = rpres1 - rpres2
 print("Difference : ", diff)
 
-plt2.plot(x1, y1, marker='+')
+plt2.plot(x1, y1, color='blue', marker='+')
 plt2.plot(x2, y2, color='red', marker='o')
+plt2.xlabel("Recall")
+plt2.ylabel("Precision")
 plt2.show()
 
 fig = plt3.figure()
-ax = fig.add_axes([0, 0, 1, 1])
 x_axis = ["rpres1", "rpres2", "Difference"]
 y_axis = [rpres1, rpres2, diff]
-ax.bar(x_axis, y_axis)
+plt3.bar([0, 1, 2], y_axis)
+plt3.xticks([0, 1, 2], x_axis)
 plt3.show()
 
 d56 = rp[0]
