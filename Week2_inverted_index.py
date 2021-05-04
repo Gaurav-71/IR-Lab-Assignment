@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from nltk.tokenize import word_tokenize
 
-preprocessing_done = False
+preprocessing_done = True
 
 
 def preprocess_and_save():
