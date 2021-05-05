@@ -36,8 +36,6 @@ query = input("\nEnter your query :")
 query = Week1_preprocessing_document.preprocess_query(query) 
 query = word_tokenize(query)
 
-print(index['sun'])
-print(index['moon'])
 ranking = []
 
 for i in range(0, 10): # initializing same rank for all docs

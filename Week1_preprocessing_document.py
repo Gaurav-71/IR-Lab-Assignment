@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import nltk
@@ -6,7 +7,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
-show_statistics = False
+show_statistics = True
 
 def preprocess_document(fname):
     
@@ -30,9 +31,6 @@ def preprocess_document(fname):
         word for word in text_tokens if word not in stopwords.words()]
 
 
-    
-    x = " ".join(tokens_without_stopwords)
-
     porter_stemmer = PorterStemmer()
 
     final_text = ""
@@ -40,11 +38,32 @@ def preprocess_document(fname):
         final_text = final_text + porter_stemmer.stem(t) + " "
 
     if(show_statistics):
-        print("\nLength of Document before processing -", num_words)
-        print("Length of Document after lexical analysis -", len(x.split(" ")))
-        print("Length of Document after stopwords removal -", len(tokens_without_stopwords))
-        print("Length of Document after stemming -", len(final_text.split(" ")))
-        print("Percentage decrease in length - ", str(round(100*((num_words - len(final_text.split(" ")))/num_words), 2))+'%')
+
+        s1 = os.path.getsize(fname)
+
+        f = open("temp.txt", "w")
+        f.truncate(0)
+        f.write(x)
+        f.close()
+        s2 = os.path.getsize("temp.txt")
+        
+        f = open("temp.txt", "w")
+        f.truncate(0)
+        f.write(" ".join(tokens_without_stopwords))
+        f.close()
+        s3 = os.stat("temp.txt").st_size
+        
+        f = open("temp.txt", "w")
+        f.truncate(0)
+        f.write(final_text)
+        f.close()
+        s4 = os.path.getsize("temp.txt")
+        
+        print("\nSize of Document before processing -",  s1, "bytes")
+        print("Size of Document after lexical analysis -", s2, "bytes")
+        print("Size of Document after stopwords removal -", s3, "bytes")
+        print("Size of Document after stemming -", s4, "bytes")
+        print("Percentage decrease in size - ", str(round(100*((s1 - s4)/s1), 2))+'%')
 
     print("Finished preprocessing -", fname)
 
