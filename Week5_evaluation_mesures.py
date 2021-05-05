@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt1
 import matplotlib.pyplot as plt2
 import matplotlib.pyplot as plt3
+import random
 
 
 def pres_rec(rq, aq):
@@ -66,14 +67,7 @@ inp = interp(rp)
 avg = average_pres(rp)
 r_precission = r_pres(rq, aq)
 
-print("Recall Precision : ", rp)
-print()
-print("Inter : ", inp)
-print()
-print(avg)
-print()
 print("R_Precission : ", r_precission)
-
 
 x, y = zip(*inp)
 plt1.plot(x, y)
@@ -108,11 +102,58 @@ plt2.xlabel("Recall")
 plt2.ylabel("Precision")
 plt2.show()
 
-fig = plt3.figure()
-x_axis = ["rpres1", "rpres2", "Difference"]
-y_axis = [rpres1, rpres2, diff]
-plt3.bar([0, 1, 2], y_axis)
-plt3.xticks([0, 1, 2], x_axis)
+# fig = plt3.figure()
+# x_axis = ["rpres1", "rpres2", "Difference"]
+# y_axis = [rpres1, rpres2, diff]
+# plt3.bar([0, 1, 2], y_axis)
+# plt3.xticks([0, 1, 2], x_axis)
+# plt3.show()
+
+def r_pres_pair(Rq,Aq): # find r_precision for each pair of rq, aq
+    r_prec = []
+    for rq,aq in zip(Rq,Aq):
+        temp = r_pres(rq,aq)
+        r_prec.append(temp)
+    return r_prec
+
+docs = ["d"+str(i) for i in range(1,21)] #d1 to d20
+
+Rq10, AqA, AqB = [],[],[]
+
+# Generating n relavent documents for a given query
+for _ in range(10):
+    n = random.randint(6,9) 
+    li = random.sample(docs,n) #select n random docs
+    Rq10.append(li)
+    
+# Generating n documents retrieved by Algoritm A for a given query
+for _ in range(10):
+    n = random.randint(13,18)
+    li = random.sample(docs,n)#select n random docs
+    AqA.append(li)
+
+# Generating n documents retrieved by Algoritm B for a given query
+for _ in range(10):
+    n = random.randint(13,18)
+    li = random.sample(docs,n) #select n random docs
+    AqB.append(li)
+
+RP_A = r_pres_pair(Rq10,AqA)
+
+RP_B = r_pres_pair(Rq10,AqB)
+
+RP_AB = [A-B for A,B in zip(RP_A,RP_B)]
+
+
+qno = list(range(1,11))
+
+plt3.bar(qno,RP_AB,color="blue",width=0.7)
+plt3.xticks(qno)
+plt3.axhline(y = 0, color="black",linestyle = '-')
+plt3.xlabel("Query Number")
+plt3.ylabel("R Precision A-B")
+plt3.title("Precision Histogram")
+plt3.ylim(-1.5,1.5)
 plt3.show()
 
 d56 = rp[0]
